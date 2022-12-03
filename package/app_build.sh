@@ -48,9 +48,11 @@ echo
 
 cleanup                                     && \
 build linux   amd64   ""    linux   amd64   && \
-build darwin  arm64   ""    macos   amd64   && \
-build darwin  amd64   ""    macos   m1      && \
 build linux   arm     7     linux   armhf   && \
 build linux   arm64   7     linux   armhf64 && \
+build darwin  amd64   ""    macos   x86_64  && \
+build darwin  arm64   ""    macos   m1      && \
+build windows amd64   ""    win     x86_64  && \
+build windows 386     ""    win     x86     && \
 echo "Build complete"
 

@@ -17,7 +17,7 @@ echo
 
 
 DSTPATH="${DIR}/distr"
-SRCDIR="$DSTPATH/bin/linux"
+SRCDIR="$DSTPATH/bin"
 
 # https://www.internalpointers.com/post/build-binary-deb-package-practical-guide
 function package_deb() {
@@ -31,7 +31,7 @@ function package_deb() {
   #install -m 0644 "${DIR}/debian/mbridge.service"  "${DSTDIR}/etc/systemd/system/mbridge.service"
   #install -m 0644 "${DIR}/../conf/channels.json"     "${DSTDIR}/etc/mbridge/channels.json"
   #install -m 0644 "${DIR}/../conf/logger.json"       "${DSTDIR}/etc/mbridge/logger.json"
-  install -m 0755 "${SRCDIR}/${ARCH}/motp" "${DSTDIR}/usr/local/bin/motp"
+  install -m 0755 "${SRCDIR}/linux/${ARCH}/motp" "${DSTDIR}/usr/local/bin/motp"
   {
     echo "Package: motp"
     echo "Version: ${VERSION}"
@@ -46,7 +46,28 @@ function package_deb() {
   dpkg-deb --build --root-owner-group "${DSTDIR}"
   rm -rf "${DSTDIR}"
 }
-
-package_deb amd64   "${DSTPATH}"
-package_deb armhf   "${DSTPATH}"
-package_deb armhf64 "${DSTPATH}"
+function package_tgz() {
+  OS=$1
+  ARCH=$2
+  DSTPATH=$3
+  DSTFILE="motp_${VERSION}_${OS}_${ARCH}.tgz"
+  cd "${SRCDIR}/${OS}/${ARCH}"    && \
+  tar cvfz "${DSTFILE}" motp      && \
+  mv "${DSTFILE}" "${DSTPATH}"
+}
+function package_zip() {
+  OS=$1
+  ARCH=$2
+  DSTPATH=$3
+  DSTFILE="motp_${VERSION}_${OS}_${ARCH}.zip"
+  cd  "${SRCDIR}/${OS}/${ARCH}"   && \
+  zip "${DSTFILE}" motp           && \
+  mv  "${DSTFILE}" "${DSTPATH}"
+}
+package_deb amd64         "${DSTPATH}"
+package_deb armhf         "${DSTPATH}"
+package_deb armhf64       "${DSTPATH}"
+package_tgz macos x86_64  "${DSTPATH}"
+package_tgz macos m1      "${DSTPATH}"
+package_zip win   x86_64  "${DSTPATH}"
+package_zip win   x86     "${DSTPATH}"

@@ -10,9 +10,11 @@ else
   shift
 fi
 
-./podman/podman_init.sh            && \
-./podman/podman_build.sh           && \
-./podman/podman_start.sh           && \
+cd ./podman                 && \
+./podman_init.sh            && \
+./podman_build.sh           && \
+./podman_start.sh           && \
 podman exec -ti debian bash -c "cd /src/package && ./app_package.sh $VERSION" && \
-./podman/podman_shutdown.sh        && \
+podman stop debian
+./podman_shutdown.sh        && \
 echo ""
