@@ -25,12 +25,7 @@ function package_deb() {
   DSTPATH=$2
   DSTDIR="${DSTPATH}/motp_${VERSION}_${ARCH}"
   mkdir -p "$DSTDIR/DEBIAN"
-  #install -d "${DSTDIR}/etc/motp"
   install -d "${DSTDIR}/usr/local/bin"
-  #install -d "${DSTDIR}/etc/systemd/system"
-  #install -m 0644 "${DIR}/debian/mbridge.service"  "${DSTDIR}/etc/systemd/system/mbridge.service"
-  #install -m 0644 "${DIR}/../conf/channels.json"     "${DSTDIR}/etc/mbridge/channels.json"
-  #install -m 0644 "${DIR}/../conf/logger.json"       "${DSTDIR}/etc/mbridge/logger.json"
   install -m 0755 "${SRCDIR}/linux/${ARCH}/motp" "${DSTDIR}/usr/local/bin/motp"
   {
     echo "Package: motp"
