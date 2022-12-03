@@ -1,0 +1,6 @@
+.idea/
+conf/
+src/go.mod
+src/go.sum
+src/motp
+package/distr/**
